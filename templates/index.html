@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Intervention Predictor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6 font-sans">
+
+  <div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-gray-800">Student Intervention Predictor</h1>
+
+    <form action="/predict" method="post" class="bg-white p-6 rounded-lg shadow-md space-y-4">
+      <!-- START: Inputs -->
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Study Time (weekly hours at home)</label>
+        <select name="studytime" class="w-full border border-gray-300 rounded-md p-2">
+          <option value="1">1 - Less than 2 hours/week</option>
+          <option value="2">2 - 2 to 5 hours/week</option>
+          <option value="3">3 - 5 to 10 hours/week</option>
+          <option value="4">4 - More than 10 hours/week</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Go Out (social activity)</label>
+        <select name="goout" class="w-full border border-gray-300 rounded-md p-2">
+          <option value="1">1 - Never</option>
+          <option value="2">2 - Rarely</option>
+          <option value="3">3 - Sometimes</option>
+          <option value="4">4 - Often</option>
+          <option value="5">5 - Very Frequently</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Failures (number of subject failures)</label>
+        <input type="number" name="failures" min="0" max="4" required class="w-full border border-gray-300 rounded-md p-2" />
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Family Support</label>
+        <select name="famsup" class="w-full border border-gray-300 rounded-md p-2">
+          <option value="1">Yes</option>
+          <option value="0">No</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Daily Alcohol Consumption (Dalc)</label>
+        <select name="Dalc" class="w-full border border-gray-300 rounded-md p-2">
+          <option value="1">1 - Never</option>
+          <option value="2">2 - Rarely</option>
+          <option value="3">3 - Sometimes</option>
+          <option value="4">4 - Often</option>
+          <option value="5">5 - Very Often</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Weekend Alcohol Consumption (Walc)</label>
+        <select name="Walc" class="w-full border border-gray-300 rounded-md p-2">
+          <option value="1">1 - Never</option>
+          <option value="2">2 - Rarely</option>
+          <option value="3">3 - Sometimes</option>
+          <option value="4">4 - Often</option>
+          <option value="5">5 - Very Often</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">Absences (classes missed)</label>
+        <input type="number" name="absences" min="0" max="100" required class="w-full border border-gray-300 rounded-md p-2" />
+      </div>
+
+      <div>
+        <label class="block font-medium text-gray-700 mb-1">G2 Grade (second period score out of 20)</label>
+        <input type="number" name="G2" min="0" max="20" required class="w-full border border-gray-300 rounded-md p-2" />
+      </div>
+      <!-- END: Inputs -->
+
+      <div>
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+          Predict Intervention
+        </button>
+      </div>
+    </form>
+
+    {% if prediction %}
+    <div class="mt-6 p-4 bg-green-100 text-green-800 border-l-4 border-green-500 rounded">
+      <strong>Predicted Intervention:</strong> {{ prediction }}
+    </div>
+
+    {% if heatmap %}
+    <div class="mt-6 bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold mb-2 text-gray-800">📌 Z-Score Heatmap (How this student differs from the average)</h2>
+      <img src="data:image/png;base64,{{ heatmap }}" alt="Z-Score Heatmap" class="rounded shadow-md mx-auto max-w-full">
+    </div>
+    {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="fixed top-6 right-6 w-72 bg-white border border-gray-300 p-4 rounded-lg shadow-md text-sm">
+    <h3 class="text-lg font-semibold mb-2">🎓 Input Help Guide</h3>
+    <ul class="list-disc ml-5 space-y-1">
+      <li><strong>Study Time</strong>: Ask “How much do you study per week?”</li>
+      <li><strong>Go Out</strong>: “How often do you hang out with friends?”</li>
+      <li><strong>Failures</strong>: “Did you fail any subjects before?”</li>
+      <li><strong>Family Support</strong>: “Do your parents help with studies?”</li>
+      <li><strong>Dalc/Walc</strong>: “Do you drink alcohol during weekdays/weekends?”</li>
+      <li><strong>Absences</strong>: “How many classes did you miss this year?”</li>
+      <li><strong>G2</strong>: “What was your last exam score?”</li>
+    </ul>
+  </div>
+
+</body>
+</html>
